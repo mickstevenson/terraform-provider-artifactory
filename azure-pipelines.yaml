@@ -1,0 +1,34 @@
+trigger:
+  - master
+
+pool:
+  name: Coles-Private-Hosted-Linux-Production
+
+variables:
+  GOBIN:  '$(GOPATH)/bin'
+  GOPATH: '$(system.defaultWorkingDirectory)/gopath'
+  MODULEPATH: '$(GOPATH)/src/github.com/microsoft/terraform-provider-azuredevops'
+  GOVERSION: '1.15.3'
+  REPONAME: 'tfp-nonprod-generic-local'
+  SERVICE_CONNECTION_NAME: 'Artifactory'
+  ACCTESTGROUPS: 'data_sources'
+  ORG_NAME: 'colesdev'
+  PROMOTION_REPO_TARGET: 'tfp-prod-generic-local'
+  PROMOTION_REPO_SOURCE: 'tfp-nonprod-generic-local'
+  PROJECT_PREFIX: 'TFP'
+
+steps:
+- task: GoTool@0
+  displayName: 'GO Install'
+  inputs:
+    version: $(GOVERSION)
+- script: |
+    mkdir -p '$(GOBIN)'
+    mkdir -p '$(GOPATH)/pkg'
+    mkdir -p '$(MODULEPATH)'
+    shopt -s extglob
+    mv !(gopath) '$(MODULEPATH)'
+    mv .[!.]* '$(MODULEPATH)'
+    echo '##vso[task.prependpath]$(GOBIN)'
+    echo '##vso[task.prependpath]$(GOROOT)/bin'
+  displayName: 'Configure GO Workspace'
