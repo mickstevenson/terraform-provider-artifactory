@@ -31,17 +31,6 @@ steps:
   displayName: 'Configure GO Workspace'
 
 - task: Bash@3
-  name: 'dockertest'
-  displayName: 'dockertest'
-  inputs:
-    targetType: 'inline'
-    script: |
-      scripts/run-artifactory.sh
-      TF_ACC=1 ARTIFACTORY_USERNAME=admin ARTIFACTORY_PASSWORD=password ARTIFACTORY_URL=http://localhost:8080/artifactory \
-      go test $(TEST) -v -parallel 20 $(TESTARGS) -timeout 120m
-    workingDirectory: '$(MODULEPATH)'
-
-- task: Bash@3
   name: 'CheckFormat'
   displayName: 'Check Format'
   inputs:
@@ -72,6 +61,23 @@ steps:
   inputs:
     codeCoverageTool: Cobertura 
     summaryFileLocation: $(System.DefaultWorkingDirectory)/**/coverage.xml
+
+- task: Bash@3
+  name: 'AcceptanceTest'
+  displayName: 'Acceptance Test'
+  inputs:
+    targetType: 'inline'
+    script: |
+      scripts/run-artifactory.sh
+      TF_ACC=1 ARTIFACTORY_USERNAME=admin ARTIFACTORY_PASSWORD=password ARTIFACTORY_URL=http://localhost:8080/artifactory \
+      go test ./... -v -parallel 20 -timeout 120m 2>&1 | go-junit-report > acctest_report.xml
+    workingDirectory: '$(MODULEPATH)'
+
+- task: PublishTestResults@2
+  displayName: 'Publish Acceptance Test Results'
+  inputs:
+    testRunner: JUnit
+    testResultsFiles: $(System.DefaultWorkingDirectory)/**/acctest_report.xml
 
 - task: SonarQubePrepare@4
   displayName: Sonar Qube - Prepare
