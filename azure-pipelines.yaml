@@ -9,7 +9,7 @@ variables:
   REPONAME: 'tfp-nonprod-generic-local'
   SERVICE_CONNECTION_NAME: 'Artifactory'
   ACCTESTGROUPS: 'data_sources'
-  ORG_NAME: 'colesdev' #####
+  ORG_NAME: 'colesdev'
   PROMOTION_REPO_TARGET: 'tfp-prod-generic-local'
   PROMOTION_REPO_SOURCE: 'tfp-nonprod-generic-local'
   PROJECT_PREFIX: 'TFP'
