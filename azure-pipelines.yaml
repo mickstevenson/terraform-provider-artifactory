@@ -30,6 +30,15 @@ steps:
     echo '##vso[task.prependpath]$(GOROOT)/bin'
   displayName: 'Configure GO Workspace'
 
+- task: Bash@3
+  name: 'BuildProiver'
+  displayName: 'Build Provider'
+  inputs:
+    targetType: 'inline'
+    script: |
+      go build
+    workingDirectory: '$(MODULEPATH)'
+
 - task: ArtifactoryGenericUpload@2
   name: 'ArtifactoryUpload'
   displayName: 'Artifactory Upload'
