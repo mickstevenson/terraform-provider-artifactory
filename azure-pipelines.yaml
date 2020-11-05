@@ -37,7 +37,8 @@ steps:
     targetType: 'inline'
     script: |
       scripts/run-artifactory.sh
-      docker run hello-world
+      TF_ACC=1 ARTIFACTORY_USERNAME=admin ARTIFACTORY_PASSWORD=password ARTIFACTORY_URL=http://localhost:8080/artifactory \
+	    go test $(TEST) -v -parallel 20 $(TESTARGS) -timeout 120m
     workingDirectory: '$(MODULEPATH)'
 
 - task: Bash@3
