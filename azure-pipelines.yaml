@@ -15,15 +15,6 @@ variables:
   PROJECT_PREFIX: 'TFP'
 
 - task: Bash@3
-  name: 'DockerTest'
-  displayName: 'Docker Test'
-  inputs:
-    targetType: 'inline'
-    script: |
-      docker run hello-world
-    workingDirectory: '$(MODULEPATH)'
-
-- task: Bash@3
   name: 'BuildProiver'
   displayName: 'Build Provider'
   inputs:
