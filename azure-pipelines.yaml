@@ -38,7 +38,7 @@ steps:
     script: |
       scripts/run-artifactory.sh
       TF_ACC=1 ARTIFACTORY_USERNAME=admin ARTIFACTORY_PASSWORD=password ARTIFACTORY_URL=http://localhost:8080/artifactory \
-	    go test $(TEST) -v -parallel 20 $(TESTARGS) -timeout 120m
+      go test $(TEST) -v -parallel 20 $(TESTARGS) -timeout 120m
     workingDirectory: '$(MODULEPATH)'
 
 - task: Bash@3
