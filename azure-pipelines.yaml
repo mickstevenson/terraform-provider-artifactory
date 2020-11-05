@@ -140,7 +140,7 @@ steps:
     copy: true
     dryRun: false
 
-# sonar - ensure branch name
+# sonar - ensure branch name - done
 # acctest and publish
 # coverage
 # artifactory tools
