@@ -56,6 +56,12 @@ steps:
     testRunner: JUnit
     testResultsFiles: $(System.DefaultWorkingDirectory)/**/report.xml
 
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish Coverage Results'
+  inputs:
+    codeCoverageTool: Cobertura 
+    summaryFileLocation: $(System.DefaultWorkingDirectory)/**/coverage.xml
+
 - task: SonarQubePrepare@4
   displayName: Sonar Qube - Prepare
   inputs:
@@ -129,7 +135,7 @@ steps:
     copy: true
     dryRun: false
 
-# sonar
+# sonar - ensure branch name
 # acctest and publish
 # coverage
 # artifactory tools
