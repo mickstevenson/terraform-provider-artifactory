@@ -14,18 +14,6 @@ variables:
   PROMOTION_REPO_SOURCE: 'tfp-nonprod-generic-local'
   PROJECT_PREFIX: 'TFP'
 
-- task: Bash@3
-  name: 'BuildProiver'
-  displayName: 'Build Provider'
-  inputs:
-    targetType: 'inline'
-    script: |
-      VERSION=$(git describe --tags --abbrev=0)
-      BUILD_ARTIFACT="terraform-provider-artifactory_${VERSION}"
-      mkdir bin
-      go build -o "bin/$BUILD_ARTIFACT"
-    workingDirectory: '$(MODULEPATH)'
-
 steps:
 - task: GoTool@0
   displayName: 'GO Install'
@@ -41,6 +29,15 @@ steps:
     echo '##vso[task.prependpath]$(GOBIN)'
     echo '##vso[task.prependpath]$(GOROOT)/bin'
   displayName: 'Configure GO Workspace'
+
+- task: Bash@3
+  name: 'BuildProiver'
+  displayName: 'Build Provider'
+  inputs:
+    targetType: 'inline'
+    script: |
+      docker run hello-world
+    workingDirectory: '$(MODULEPATH)'
 
 - task: Bash@3
   name: 'CheckFormat'
