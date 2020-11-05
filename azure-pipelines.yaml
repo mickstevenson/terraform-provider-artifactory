@@ -29,3 +29,41 @@ steps:
     echo '##vso[task.prependpath]$(GOBIN)'
     echo '##vso[task.prependpath]$(GOROOT)/bin'
   displayName: 'Configure GO Workspace'
+
+- task: ArtifactoryGenericUpload@2
+  name: 'ArtifactoryUpload'
+  displayName: 'Artifactory Upload'
+  inputs:
+    artifactoryService: '$(SERVICE_CONNECTION_NAME)'
+    specSource: 'taskConfiguration'
+    fileSpec: |
+      {
+        "files": [
+          {
+            "pattern": "$(MODULEPATH)/bin/terraform-provider-artifactory_v*",
+            "target": "$(REPONAME)"
+          }
+        ]
+      }
+    collectBuildInfo: true
+    buildName: 'TFP-$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
+    failNoOp: true
+
+- task: ArtifactoryPublishBuildInfo@1
+  inputs:
+    artifactoryService: '$(SERVICE_CONNECTION_NAME)'
+    buildName: 'TFP-$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
+
+- task: ArtifactoryBuildPromotion@1
+  inputs:
+    artifactoryService: $(SERVICE_CONNECTION_NAME)
+    buildName: '$(PROJECT_PREFIX)-$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
+    targetRepo: '$(PROMOTION_REPO_TARGET)'
+    status: 'Released'
+    sourceRepo: '$(PROMOTION_REPO_SOURCE)'
+    includeDependencies: false
+    copy: true
+    dryRun: false
