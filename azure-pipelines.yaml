@@ -70,7 +70,6 @@ steps:
       sonar.scm.exclusions.disabled=true
       sonar.sources=$(MODULEPATH)
       sonar.exclusions=**/*.java
-      sonar.branch.name=$(Build.SourceBranchName)
 
 - task: SonarQubeAnalyze@4
   displayName: Sonar Qube - Analyze
