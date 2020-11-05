@@ -56,6 +56,30 @@ steps:
     testRunner: JUnit
     testResultsFiles: $(System.DefaultWorkingDirectory)/**/report.xml
 
+- task: SonarQubePrepare@4
+  displayName: Sonar Qube - Prepare
+  inputs:
+    SonarQube: 'SonarQube'
+    scannerMode: 'CLI'
+    configMode: 'manual'
+    cliProjectKey: 'tfp-web'
+    cliProjectName: 'TFP-Web'
+    cliSources: '$(System.DefaultWorkingDirectory)'
+    extraProperties: | 
+      sonar.go.coverage.reportPaths=$(MODULEPATH)/coverage.out
+      sonar.scm.exclusions.disabled=true
+      sonar.sources=$(MODULEPATH)
+      sonar.exclusions=**/*.java
+      sonar.branch.name=$(Build.SourceBranchName)
+
+- task: SonarQubeAnalyze@4
+  displayName: Sonar Qube - Analyze
+
+- task: SonarQubePublish@4
+  displayName: Sonar Qube - Upload Report
+  inputs:
+    pollingTimeoutSec: '300'
+
 - task: Bash@3
   name: 'BuildProiver'
   displayName: 'Build Provider'
@@ -105,3 +129,8 @@ steps:
     includeDependencies: false
     copy: true
     dryRun: false
+
+# sonar
+# acctest and publish
+# coverage
+# artifactory tools
