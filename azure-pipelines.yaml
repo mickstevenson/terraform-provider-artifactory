@@ -48,11 +48,6 @@ steps:
       go test ./... -v -coverprofile=coverage.out -covermode count -timeout=30s -parallel=4 2>&1 | go-junit-report > report.xml
       gocov convert coverage.out > coverage.json
       gocov-xml < coverage.json > coverage.xml
-
-      echo '===== coverage ====='
-      cat $(MODULEPATH)/coverage.out
-      echo '===== coverage ====='
-
     workingDirectory: '$(MODULEPATH)'
 
 - task: PublishTestResults@2
@@ -142,5 +137,5 @@ steps:
 
 # sonar - ensure branch name - done
 # acctest and publish
-# coverage
-# artifactory tools
+# coverage - done
+# artifactory tools #####
