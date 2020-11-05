@@ -48,6 +48,11 @@ steps:
       go test ./... -v -coverprofile=coverage.out -covermode count -timeout=30s -parallel=4 2>&1 | go-junit-report > report.xml
       gocov convert coverage.out > coverage.json
       gocov-xml < coverage.json > coverage.xml
+
+      echo '===== coverage ====='
+      cat $(MODULEPATH)/coverage.out
+      echo '===== coverage ====='
+
     workingDirectory: '$(MODULEPATH)'
 
 - task: PublishTestResults@2
@@ -76,10 +81,6 @@ steps:
       sonar.scm.exclusions.disabled=true
       sonar.sources=$(MODULEPATH)
       sonar.exclusions=**/*.java
-
-      echo '===== coverage ====='
-      cat $(MODULEPATH)/coverage.out
-      echo '===== coverage ====='
 
 - task: SonarQubeAnalyze@4
   displayName: Sonar Qube - Analyze
