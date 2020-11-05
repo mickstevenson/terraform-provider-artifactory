@@ -4,7 +4,7 @@ trigger:
 variables:
   GOBIN:  '$(GOPATH)/bin'
   GOPATH: '$(system.defaultWorkingDirectory)/gopath'
-  MODULEPATH: '$(GOPATH)/src/github.com/microsoft/terraform-provider-artifactory'
+  MODULEPATH: '$(GOPATH)/src/github.com/artifactory/terraform-provider-artifactory'
   GOVERSION: '1.15.3'
   REPONAME: 'tfp-nonprod-generic-local'
   SERVICE_CONNECTION_NAME: 'Artifactory'
