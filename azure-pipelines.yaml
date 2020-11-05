@@ -36,6 +36,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
+      scripts/run-artifactory.sh
       docker run hello-world
     workingDirectory: '$(MODULEPATH)'
 
