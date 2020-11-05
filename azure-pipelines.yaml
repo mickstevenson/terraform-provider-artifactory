@@ -37,6 +37,7 @@ steps:
     targetType: 'inline'
     script: |
       go build
+      ls -la
     workingDirectory: '$(MODULEPATH)'
 
 - task: ArtifactoryGenericUpload@2
