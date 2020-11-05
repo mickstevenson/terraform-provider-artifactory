@@ -31,6 +31,26 @@ steps:
   displayName: 'Configure GO Workspace'
 
 - task: Bash@3
+  name: 'CheckFormat'
+  displayName: 'Check Format'
+  inputs:
+    filePath: '$(MODULEPATH)/scripts/gofmtcheck.sh'
+
+- task: Bash@3
+  name: 'UnitTest'
+  displayName: 'Unit Test'
+  inputs:
+    targetType: 'inline'
+    script: |
+      go get github.com/jstemmer/go-junit-report
+      go get github.com/axw/gocov/gocov
+      go get github.com/AlekSi/gocov-xml
+      go test ./... -v -coverprofile=coverage.out -covermode count -timeout=30s -parallel=4 2>&1 | go-junit-report > report.xml
+      gocov convert coverage.out > coverage.json
+      gocov-xml < coverage.json > coverage.xml
+    workingDirectory: '$(MODULEPATH)'
+
+- task: Bash@3
   name: 'BuildProiver'
   displayName: 'Build Provider'
   inputs:
