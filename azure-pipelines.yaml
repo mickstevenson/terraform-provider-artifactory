@@ -9,10 +9,31 @@ variables:
   REPONAME: 'tfp-nonprod-generic-local'
   SERVICE_CONNECTION_NAME: 'Artifactory'
   ACCTESTGROUPS: 'data_sources'
-  ORG_NAME: 'colesdev'
+  ORG_NAME: 'colesdev' #####
   PROMOTION_REPO_TARGET: 'tfp-prod-generic-local'
   PROMOTION_REPO_SOURCE: 'tfp-nonprod-generic-local'
   PROJECT_PREFIX: 'TFP'
+
+- task: Bash@3
+  name: 'DockerTest'
+  displayName: 'Docker Test'
+  inputs:
+    targetType: 'inline'
+    script: |
+      docker run hello-world
+    workingDirectory: '$(MODULEPATH)'
+
+- task: Bash@3
+  name: 'BuildProiver'
+  displayName: 'Build Provider'
+  inputs:
+    targetType: 'inline'
+    script: |
+      VERSION=$(git describe --tags --abbrev=0)
+      BUILD_ARTIFACT="terraform-provider-artifactory_${VERSION}"
+      mkdir bin
+      go build -o "bin/$BUILD_ARTIFACT"
+    workingDirectory: '$(MODULEPATH)'
 
 steps:
 - task: GoTool@0
