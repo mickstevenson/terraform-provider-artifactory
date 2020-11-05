@@ -1,9 +1,6 @@
 trigger:
   - master
 
-pool:
-  name: Coles-Private-Hosted-Linux-Production
-
 variables:
   GOBIN:  '$(GOPATH)/bin'
   GOPATH: '$(system.defaultWorkingDirectory)/gopath'
