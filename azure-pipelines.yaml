@@ -50,6 +50,12 @@ steps:
       gocov-xml < coverage.json > coverage.xml
     workingDirectory: '$(MODULEPATH)'
 
+- task: PublishTestResults@2
+  displayName: 'Publish Test Results'
+  inputs:
+    testRunner: JUnit
+    testResultsFiles: $(System.DefaultWorkingDirectory)/**/report.xml
+
 - task: Bash@3
   name: 'BuildProiver'
   displayName: 'Build Provider'
@@ -60,7 +66,6 @@ steps:
       BUILD_ARTIFACT="terraform-provider-artifactory_${VERSION}"
       mkdir bin
       go build -o "bin/$BUILD_ARTIFACT"
-      ls -la
     workingDirectory: '$(MODULEPATH)'
 
 - task: ArtifactoryGenericUpload@2
