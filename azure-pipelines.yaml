@@ -36,7 +36,10 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      go build
+      VERSION=$(git describe --tags --abbrev=0)
+      BUILD_ARTIFACT="terraform-provider-artifactory_${VERSION}"
+      mkdir bin
+      go build -o "bin/$BUILD_ARTIFACT"
       ls -la
     workingDirectory: '$(MODULEPATH)'
 
