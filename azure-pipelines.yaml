@@ -77,6 +77,10 @@ steps:
       sonar.sources=$(MODULEPATH)
       sonar.exclusions=**/*.java
 
+      echo '===== coverage ====='
+      cat $(MODULEPATH)/coverage.out
+      echo '===== coverage ====='
+
 - task: SonarQubeAnalyze@4
   displayName: Sonar Qube - Analyze
 
